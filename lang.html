@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,7 +129,7 @@
             border: 2px solid var(--border);
             border-radius: 10px;
             padding: 14px 18px;
-            text-align: right;
+            text-align: left;
             font-size: 1rem;
             cursor: pointer;
             transition: all 0.2s ease;
@@ -195,7 +195,7 @@
         }
 
         .review-section {
-            text-align: right;
+            text-align: left;
             margin-top: 30px;
             border-top: 2px solid var(--border);
             padding-top: 20px;
@@ -210,11 +210,11 @@
         }
 
         .review-item.correct-bg {
-            border-right: 5px solid var(--correct);
+            border-left: 5px solid var(--correct);
         }
 
         .review-item.incorrect-bg {
-            border-right: 5px solid var(--incorrect);
+            border-left: 5px solid var(--incorrect);
         }
 
         .explanation {
@@ -249,26 +249,26 @@
 
         <div id="quiz-box">
             <div class="quiz-header">
-                <div>السؤال <span id="current-num">1</span> من 25</div>
-                <div class="timer">⏱️ المتبقي: <span id="timer-display">25:00</span></div>
+                <div>Question <span id="current-num">1</span> of 25</div>
+                <div class="timer">⏱️ Remaining: <span id="timer-display">25:00</span></div>
             </div>
 
             <div id="questions-container"></div>
 
             <div class="controls">
-                <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()" disabled>السابق</button>
-                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">التالي</button>
-                <button class="btn btn-primary" id="submit-btn" onclick="finishQuiz()" style="display: none;">إنهاء  الاختبار</button>
+                <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()" disabled>Previous</button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next</button>
+                <button class="btn btn-primary" id="submit-btn" onclick="finishQuiz()" style="display: none;">Submit Quiz</button>
             </div>
         </div>
 
         <div id="results-box" class="results-screen">
-            <h2>انتهى الاختبار!</h2>
+            <h2>Quiz Finished!</h2>
             <div class="score-box" id="final-score">0 / 25</div>
             <p id="feedback-text"></p>
 
             <div class="review-section">
-                <h3>مراجعة الإجابات وتصحيح الأخطاء:</h3>
+                <h3>Answer Review & Error Correction:</h3>
                 <div id="review-container"></div>
             </div>
         </div>
@@ -277,150 +277,150 @@
     <script>
         const questions = [
             {
-                q: "1. بصفتك مهندس أنظمة ذكاء اصطناعي، طُلِب منك تصميم نظام لتصنيف البريد الإلكتروني. لو اعتمدت على 'البرمجة التقليدية' بدلاً من 'تعلم الآلة' (Machine Learning)، ما العقبة الأساسية التي ستواجهها؟",
+                q: "1. As an AI systems engineer, you were asked to design an email classification system. If you relied on 'Traditional Programming' instead of 'Machine Learning', what primary obstacle would you face?",
                 options: [
-                    "عدم قدرة الحاسوب على معالجة النصوص العربية والإنجليزية معا.",
-                    "الحاجة لكتابة ملايين القواعد والشرائط الاستثنائية يدوياً لمواكبة أساليب الاحتيال المتجددة.",
-                    "عدم وجود شبكات عصبية قادرة على فهم العناوين الإلكترونية.",
-                    "استهلاك الخوادم لطاقة معالجة ضخمة جداً مقارنة بتعلم الآلة."
+                    "The inability of the computer to process Arabic and English text together.",
+                    "The need to manually write millions of rules and exception statements to keep up with evolving fraud techniques.",
+                    "The lack of neural networks capable of understanding email addresses.",
+                    "Servers consuming far too much processing power compared to machine learning."
                 ],
                 correct: 1,
-                exp: "البرمجة التقليدية تعتمد على قواعد ثابتة (Fixed rules). في حالة الفلترة، ستحتاج لكتابة كل شروط الكلمات والاحتيالات يدوياً وهو أمر شبه مستحيل للتطور المستمر للسبام."
+                exp: "Traditional programming relies on fixed rules. In filtering, you would need to write every rule for words and scams manually, which is virtually impossible due to the continuous evolution of spam."
             },
             {
-                q: "2. ما الفارق الجوهري في آلية العمل بين نموذج يتنبأ بأسعار المنازل بناءً على مساحتها (Machine Learning) ونموذج ينشئ صوراً خيالية لمنازل غير موجودة (Generative AI)؟",
+                q: "2. What is the fundamental difference in the working mechanism between a model that predicts house prices based on area (Machine Learning) and a model that generates fictional images of non-existent houses (Generative AI)?",
                 options: [
-                    "الأول يستخرج أنماطاً للتنبؤ بقيمة عدودية، بينما الثاني يستخدم التعلم العميق لتركيب بيانات وبنية جديدة تماماً.",
-                    "الأول يعتمد على الشبكات العصبية، بينما الثاني لا يستخدم التعلم العميق.",
-                    "الأول يعتمد على قواعد ثابتة، بينما الثاني يعتمد على صياغة المحادثات فقط.",
-                    "لا يوجد فارق، كلاهما يؤدي نفس المهمة البرمجية بشكل مطبق."
+                    "The first extracts patterns to predict a numerical value, while the second uses deep learning to synthesize entirely new data and structures.",
+                    "The first relies on neural networks, while the second does not use deep learning.",
+                    "The first relies on fixed rules, while the second relies solely on conversation formatting.",
+                    "There is no difference; both perform the exact same programming task."
                 ],
                 correct: 0,
-                exp: "تعلم الآلة التقليدي يستخرج الأنماط للقيام بـ (Predictions/Judgments)، بينما الذكاء الاصطناعي التوليدي (المنبثق من التعلم العميق) ينشئ بيانات جديدة (New data) مثل الصور والنصوص."
+                exp: "Traditional machine learning extracts patterns to make predictions/judgments, whereas generative AI (derived from deep learning) creates new data such as images and text."
             },
             {
-                q: "3. تراتب التكنولوجيات (Hierarchy of AI): أي التعبيرات التالية يصف العلاقة الاحتوائية بأسلوب هندسي دقيق؟",
+                q: "3. Hierarchy of AI technologies: Which of the following expressions describes the containment relationship in a precise structural manner?",
                 options: [
-                    "الذكاء الاصطناعي التوليدي ينشئ التعلم العميق، والتعلم العميق ينشئ تعلم الآلة.",
-                    "الذكاء الاصطناعي مظلة عامة، تضم تعلم الآلة، والذي يضم التعلم العميق، والذي يضم الذكاء الاصطناعي التوليدي.",
-                    "تعلم الآلة والذكاء الاصطناعي التوليدي تقنيتان منفصلتان تماماً تحت مظلة الشبكات العصبية.",
-                    "الشبكات العصبية هي المظلة الكبرى التي تحتوي الذكاء الاصطناعي العام."
+                    "Generative AI creates deep learning, and deep learning creates machine learning.",
+                    "AI is an umbrella term containing Machine Learning, which contains Deep Learning, which contains Generative AI.",
+                    "Machine learning and generative AI are completely separate technologies under the umbrella of neural networks.",
+                    "Neural networks represent the overarching umbrella containing General Artificial Intelligence."
                 ],
                 correct: 1,
-                exp: "حسب المخطط الهيكلي في الدرس (Nested Categories): الذكاء الاصطناعي يشمل تعلم الآلة، وداخله التعلم العميق، وداخله الذكاء الاصطناعي التوليدي."
+                exp: "According to the structural diagram in the lesson (Nested Categories): Artificial Intelligence encompasses Machine Learning, which contains Deep Learning, which contains Generative AI."
             },
             {
-                q: "4. سيناريو هندسي: سيارة ذاتية القيادة تم تدريب نظامها باستخدام التعلم العميق على القيادة في شوارع مشمسة فقط. عند قيادتها أثناء عاصفة ثلجية شديدة، تعثر النظام. ما السبب العلمي لذلك وفقاً للدرس؟",
+                q: "4. Engineering Scenario: An autonomous car system trained using Deep Learning was trained to drive only in sunny weather. When driven during a severe blizzard, the system failed. What is the scientific reason for this according to the lesson?",
                 options: [
-                    "لأن الذكاء الاصطناعي الحالي ذكاء ضيق (Narrow AI) ويعتمد التعلم العميق على التعلم من البيانات الضخمة المتاحة في التدريب فقط.",
-                    "لأن الشبكة العصبية تحولت تلقائياً إلى نظام برمجي قائم على القواعد الثابتة.",
-                    "لأن الذكاء الاصطناعي التوليدي لم يقم بتوليد طرق جديدة أثناء القيادة.",
-                    "بسبب وجود خلل في المحرك الميكانيكي للسيارة وليس في نموذج الذكاء الاصطناعي."
+                    "Because today's AI is Narrow AI, and deep learning relies on learning exclusively from massive data available during training.",
+                    "Because the neural network automatically turned into a fixed-rule software system.",
+                    "Because Generative AI did not generate new roads during driving.",
+                    "Due to a fault in the car's mechanical engine rather than the AI model."
                 ],
                 correct: 0,
-                exp: "الذكاء الاصطناعي اليوم متكافئ مع (Narrow AI) محدد لمهمة وبيانات معينة؛ والشبكات العصبية في التعلم العميق تواجه صعوبة بالغة مع المواقف والبيانات التي لم ترها مسبقاً (Rarely seen in data)."
+                exp: "Today's artificial intelligence is equivalent to Narrow AI, tailored to specific tasks and data; neural networks in deep learning struggle significantly with unseen or rare scenarios (rarely seen in data)."
             },
             {
-                q: "5. كيف تفسر محاكاة الشبكة العصبية الاصطناعية (Neural Network) للخلايا العصبية البشرية في اتخاذ القرارات المعقدة؟",
+                q: "5. How do you explain an Artificial Neural Network simulating human biological neurons to make complex decisions?",
                 options: [
-                    "عن طريق إعطاء الحاسوب مشاعر وعواطف بشرية تمكنه من التفكير.",
-                    "عن طريق ربط أجزاء ومكونات بسيطة في طبقات تتبادل الإشارات لتمرير وتراكم الأنماط.",
-                    "عن طريق تخزين الأوامر في صورة شفرات ثنائية ثابتة لا تتغير.",
-                    "عن طريق استخدام المترجم الفوري بين اللغات."
+                    "By granting the computer human emotions and feelings that enable it to think.",
+                    "By connecting simple parts and components into layers that exchange signals to pass along and accumulate patterns.",
+                    "By storing commands in fixed binary code that never changes.",
+                    "By employing a real-time interpreter between languages."
                 ],
                 correct: 1,
-                exp: "تتكون الشبكة العصبية الاصطناعية من أجزاء بسيطة متصلة في طبقات (Input, Hidden, Output layers) تعمل معاً لمعالجة البيانات المعقدة كمحاكاة لشبكات خلايا الدماغ."
+                exp: "An artificial neural network consists of simple components connected across layers (Input, Hidden, Output layers) working together to process complex data, mimicking brain cell networks."
             },
             {
-                q: "6. سيناريو مطور: طوّرت شركة برنامجاً يتعرف على أصوات المستخدمين لفتح الأبواب. تم تصنيف هذا النظام بأنه (Narrow AI). ماذا يعني ذلك في التطبيق العملي؟",
+                q: "6. Developer Scenario: A company developed software that recognizes user voices to unlock doors. This system was classified as (Narrow AI). What does this mean in practical application?",
                 options: [
-                    "أن البرنامج يمكنه أيضاً ترجمة النصوص وكتابة المقالات ببراعة عالية بنفس الكفاءة.",
-                    "أن البرنامج خبير ومخصص لمهمة التعرف على الصوت فقط، ولا يمكنه اتخاذ قرارات خارج هذا نطاق.",
-                    "أن البرنامج يعمل بدون الحاجة إلى أي بيانات تدريبية أو شبكات عصبية.",
-                    "أن البرنامج يعتمد كلياً على الذكاء الاصطناعي التوليدي (Generative AI)."
+                    "The software can also translate text and write articles with high efficiency and equal skill.",
+                    "The software is specialized and dedicated solely to the voice recognition task, unable to make decisions outside this scope.",
+                    "The software operates without needing any training data or neural networks.",
+                    "The software relies entirely on Generative AI."
                 ],
                 correct: 1,
-                exp: "الذكاء الاصطناعي الحالي يوصف بأنه (Narrow AI - expert at one task only) أي أنه متفوق ومختص في تنفيذ مهمة واحدة محددة فقط."
+                exp: "Current artificial intelligence is described as Narrow AI (expert at one task only), meaning it excels and specializes in performing a single specific task."
             },
             {
-                q: "7. إذا أردنا بناء تطبيق يقوم بتوليد مقاطع صوتية ونصوص برمجية بناءً على أوامر نصية (Prompts)، فما هي التقنية المحددة المفضلة للاستخدام؟",
+                q: "7. If we want to build an application that generates audio clips and source code based on textual prompts, which specific technology is preferred?",
                 options: [
-                    "البرمجة باستخدام القواعد الثابتة (Fixed rules).",
-                    "تعلم الآلة التقليدي لفلترة البريد.",
-                    "الذكاء الاصطناعي التوليدي (Generative AI).",
-                    "الذكاء الاصطناعي العام (AGI)."
+                    "Programming using fixed rules.",
+                    "Traditional Machine Learning for email filtering.",
+                    "Generative AI.",
+                    "Artificial General Intelligence (AGI)."
                 ],
                 correct: 2,
-                exp: "الذكاء الاصطناعي التوليدي هو المسؤول عن إنشاء بيانات جديدة كالنصوص، الصور، الأكواد، والصوت بناءً على الأوامر (Prompts)."
+                exp: "Generative AI is responsible for creating new content such as text, images, code, and audio based on prompts."
             },
             {
-                q: "8. ما الدور الأساسي للـ (Hidden Layers) أو الطبقات الخفية في بناء الشبكة العصبية الاصطناعية؟",
+                q: "8. What is the primary role of Hidden Layers in building an Artificial Neural Network?",
                 options: [
-                    "استلام الأوامر النصية مباشرة من المستخدم النهائي.",
-                    "معالجة البيانات واستخراج الأنماط المعقدة والتفاصيل بين المدخلات والمخرجات.",
-                    "حفظ البيانات بشكل دائم وتصديرها كملفات PDF.",
-                    "إلغاء الحاجة لبيانات التدريب والاعتماد على الذكاء البشري."
+                    "Receiving text prompts directly from the end-user.",
+                    "Processing data and extracting complex patterns and details between inputs and outputs.",
+                    "Permanently saving data and exporting it as PDF files.",
+                    "Eliminating the need for training data and relying on human intelligence."
                 ],
                 correct: 1,
-                exp: "الطبقات الخفية في الشبكات العصبية تقوم بالعمليات الحسابية المعقدة لتحديد وتحليل الأنماط العميقة المخبأة في البيانات."
+                exp: "Hidden layers in neural networks perform complex mathematical calculations to identify and analyze deep patterns hidden within the data."
             },
             {
-                q: "9. قام مهندس بتحليل نظام اقتراح المنتجات في متجر إلكتروني ونظام تصفية الرسائل المزعجة (Spam filter). ما العامل المشترك الجوهري بينهما من حيث آلية الذكاء الاصطناعي؟",
+                q: "9. An engineer analyzed a product recommendation system in an e-commerce store and a spam filter system. What essential common factor do they share regarding AI mechanism?",
                 options: [
-                    "كلاهما يستخدم الذكاء الاصطناعي التوليدي لإنشاء منتجات ورسائل جديدة.",
-                    "كلاهما تطبيق من تطبيقات تعلم الآلة (Machine Learning) يتعلم الأنماط من بيانات المستخدمين لاتخاذ قرارات.",
-                    "كلاهما يعتمد على أكواد برمجية بشرية ثابتة لا تتغير بتغير سلوك المستخدم.",
-                    "كلاهما يعمل فقط على الهواتف الذكية دون أجهزة الكمبيوتر."
+                    "Both use Generative AI to create new products and messages.",
+                    "Both are applications of Machine Learning that learn patterns from user data to make decisions.",
+                    "Both rely on fixed human code that does not adapt to changes in user behavior.",
+                    "Both run exclusively on smartphones without computers."
                 ],
                 correct: 1,
-                exp: "كلا التطبيقين يمثلان (Machine Learning) حيث يتعلمان الأنماط (Patterns) من سلوكيات وبيانات السجلات السابقة للتنبؤ والتقييم."
+                exp: "Both applications represent Machine Learning, as they learn patterns from past log behaviors and data to predict and evaluate."
             },
             {
-                q: "10. في الاستجابة للأوامر النصية (Prompts) عبر أداة مثل ChatGPT، ما التقنية المصنفة تحت التعلم العميق التي تمكن النظام من كتابة ردود مترابطة؟",
+                q: "10. In responding to textual prompts via tools like ChatGPT, which technology classified under Deep Learning enables the system to generate coherent responses?",
                 options: [
-                    "التحليل اليدوي المباشر بواسطة المبرمج.",
-                    "الذكاء الاصطناعي التوليدي (Generative AI).",
-                    "قواعد البيانات الجغرافية الثابتة.",
-                    "نظم الترجمة المعتمدة على المعاجم فقط."
+                    "Direct manual analysis performed by the programmer.",
+                    "Generative AI.",
+                    "Fixed geographic databases.",
+                    "Translation systems based strictly on dictionary lookups."
                 ],
                 correct: 1,
-                exp: "ChatGPT هو تطبيق مباشر على الذكاء الاصطناعي التوليدي المبتكر المبني على تقنيات التعلم العميق."
+                exp: "ChatGPT is a direct application of innovative Generative AI built on deep learning techniques."
             },
             {
-                q: "11. تخيل أنك تبني نموذج ذكاء اصطناعي للتعرف على أمراض الأشجار. إذا قمت بتغذية النموذج بـ 5 صور فقط لكل مرض، فما المتوقع لنتائجه؟ ولماذا؟",
+                q: "11. Imagine you are building an AI model to recognize plant diseases. If you supply the model with only 5 images per disease, what result do you expect, and why?",
                 options: [
-                    "سيعطي نتائج ممتازة لأن التعلم العميق لا يحتاج سوى لبيانات قليلة جداً.",
-                    "سيعاني النموذج من ضعف الدقة لأنه تقنية تعلم عميق تتطلب بيانات ضخمة (Large-scale data) لتعلم الأنماط.",
-                    "سينتحل النموذج شخصية مهندس زراعي ويولد حلاً تلقائياً.",
-                    "سيتتحول الشبكة العصبية فوراً إلى قواعد كتابية ثابتة."
+                    "It will yield excellent results because deep learning requires very little data.",
+                    "The model will suffer from low accuracy because deep learning requires large-scale data to learn patterns.",
+                    "The model will impersonate an agricultural engineer and generate an automated solution.",
+                    "The neural network will immediately convert to fixed text rules."
                 ],
                 correct: 1,
-                exp: "يحتاج التعلم العميق (Deep Learning) إلى بيانات ضخمة (Large-scale data) ليتمكن من استخراج الأنماط والتعلم بفعالية."
+                exp: "Deep Learning requires large-scale data to extract patterns and learn effectively."
             },
             {
-                q: "12. سيناريو: طلب منك رئيسك في العمل اختيار التكنولوجيا المناسبة لتطوير تطبيق يترجم الكلام الصوتي المباشر بين تحدثين بلغات مختلفة أثناء المكالمات. ما التصنيف الدقيق لهذه التقنية؟",
+                q: "12. Scenario: Your supervisor asked you to choose the appropriate technology to develop an app that translates live speech between speakers of different languages during calls. What is the accurate classification of this technology?",
                 options: [
-                    "ذكاء اصطناعي يعتمد على التعلم العميق للتعرف على الصوت والترجمة (Deep Learning).",
-                    "برمجة شجرية بسيطة قائمة على القواعد الشرطية التقليدية.",
-                    "توليد رسوم متحركة ذكية.",
-                    "أنظمة تخزين سحابية تقليدية."
+                    "AI based on Deep Learning for voice recognition and translation.",
+                    "Simple decision tree programming based on traditional conditional rules.",
+                    "Smart animation generation.",
+                    "Traditional cloud storage systems."
                 ],
                 correct: 0,
-                exp: "معالجة وتحليل الصوت والترجمة الفورية المعقدة تعتمد أساساً على التعلم العميق والشبكات العصبية (Speech recognition & translation)."
+                exp: "Processing complex real-time audio and translation relies fundamentally on Deep Learning and neural networks (Speech recognition & translation)."
             },
             {
-                q: "13. عند مقارنة (Machine Learning) بـ (Fixed Rules Programming)، أي الجمل الآتية تعبر بوضوح عن وجه الاختلاف؟",
+                q: "13. When comparing (Machine Learning) to (Fixed Rules Programming), which statement clearly expresses the key distinction?",
                 options: [
-                    "في القواعد الثابتة نكتب التعليمات يدوياً، بينما في تعلم الآلة نستخرج القواعد والأنماط من البيانات.",
-                    "تعلم الآلة لا يحتاج إلى كمبيوتر لتشغيله بخلاف القواعد الثابتة.",
-                    "القواعد الثابتة تنشئ صوراً وفيديوهات، بينما تعلم الآلة لا يفعل ذلك.",
-                    "تعلم الآلة يُستخدم فقط في الروبوتات المصنعية."
+                    "In fixed rules, we write instructions manually; in machine learning, we extract rules and patterns from data.",
+                    "Machine learning does not require a computer to run, unlike fixed rules.",
+                    "Fixed rules generate images and videos, whereas machine learning does not.",
+                    "Machine learning is used exclusively in industrial robotics."
                 ],
                 correct: 0,
-                exp: "الفارق الأساسي: Traditional Programming = Fixed rules hand-written by humans. Machine Learning = Learning patterns automatically from data."
+                exp: "The key distinction: Traditional Programming = Fixed rules hand-written by humans. Machine Learning = Learning patterns automatically from data."
             },
             {
-                q: "14. أي مما يلي يمثل الترتيب الصحيح للانتقال من المفاهيم الأكثر شمولاً وعمومية إلى التكنولوجيات الأكثر تخصصاً؟",
+                q: "14. Which of the following represents the correct sequence going from the most general concepts to the most specialized technologies?",
                 options: [
                     "Generative AI -> Deep Learning -> Machine Learning -> AI",
                     "AI -> Machine Learning -> Deep Learning -> Generative AI",
@@ -428,128 +428,128 @@
                     "Machine Learning -> AI -> Deep Learning -> Generative AI"
                 ],
                 correct: 1,
-                exp: "حسب التسلسل الهرمي المذكور بالنص: الذكاء الاصطناعي (العام) ثم تعلم الآلة ثم التعلم العميق ثم الذكاء الاصطناعي التوليدي."
+                exp: "According to the hierarchy stated in the text: Artificial Intelligence (General) -> Machine Learning -> Deep Learning -> Generative AI."
             },
             {
-                q: "15. لماذا يُعتبر مصطلح 'الذكاء الاصطناعي' (AI) مصطلحاً عاماً (General Term)؟",
+                q: "15. Why is 'Artificial Intelligence' (AI) considered a general term?",
                 options: [
-                    "لأنه يقتصر فقط على الروبوتات الناطقة.",
-                    "لأنه يشمل أي تكنولوجيا تحاكي أو تؤدي سلوكاً ذكياً يشبه السلوك البشري (كالتعلم والتفكير والحكم).",
-                    "لأنه يعبر فقط عن الأجهزة الحديثة المصنوعة بعد عام 2023.",
-                    "لأنه يعتمد حتمياً على كتابة الشفرات يدويًا دون بيانات."
+                    "Because it is limited strictly to talking robots.",
+                    "Because it encompasses any technology that reproduces or performs intelligent human behavior (learning, reasoning, judgment, etc.).",
+                    "Because it only describes modern devices manufactured after 2023.",
+                    "Because it inevitably relies on writing code manually without data."
                 ],
                 correct: 1,
-                exp: "تعريف الـ AI في المستند: A general term for technologies that reproduce or perform intelligent human behavior (learning, reasoning, judgment, etc.)."
+                exp: "Definition of AI in the lesson document: 'A general term for technologies that reproduce or perform intelligent human behavior (learning, reasoning, judgment, etc.).'"
             },
             {
-                q: "16. سيناريو هندسي: إذا فشل نظام التنبؤ بالطقس المعتمد على التعلم العميق في التنبؤ بظاهرة جوية نادرة جداً لم تحدث منذ 100 عام، ما السبب التحليلي الأساسي؟",
+                q: "16. Engineering Scenario: If a weather forecasting system based on deep learning fails to predict a rare weather phenomenon that hasn't occurred in 100 years, what is the primary analytical cause?",
                 options: [
-                    "الشبكة العصبية الاصطناعية تعرضت للكسر الفيزيائي.",
-                    "النموذج لم يمتلك بيانات كافية (Rarely seen in data) عن هذه الظاهرة أثناء مرحلة التدريب.",
-                    "النظام تحول إلى ذكاء اصطناعي عام.",
-                    "الظاهرة الجوية لا يمكن التنبؤ بها إطلاقاً بأي تكنولوجيا."
+                    "The artificial neural network suffered physical breakage.",
+                    "The model lacked sufficient data (rarely seen in data) regarding this phenomenon during the training phase.",
+                    "The system transformed into Artificial General Intelligence.",
+                    "Weather phenomena cannot be predicted at all by any technology."
                 ],
                 correct: 1,
-                exp: "مذكور في أسئلة التفكير بالدرس (PAUSE & THINK): نماذج التعلم العميق تجد صعوبة بالغة في التعامل مع ما لم ترَه أو تندر رؤيته في بيانات التدريب."
+                exp: "As noted in the PAUSE & THINK sections: Deep learning models struggle significantly with inputs that were rarely or never seen during training."
             },
             {
-                q: "17. ما الوظيفة الرئيسية لـ (Input Layer) أو طبقة المدخلات في البناء الهيكلي للشبكة العصبية؟",
+                q: "17. What is the primary function of the Input Layer in the structural architecture of a neural network?",
                 options: [
-                    "إعطاء القرار النهائي للمستخدم.",
-                    "توليد الصور والفيديوهات الجديدة.",
-                    "استقبال البيانات الخام (كالصور أو الأصوات أو الأرقام) وتمريرها للطبقات التالية.",
-                    "تعديل الأكواد البرمجية للبرنامج ذاتياً."
+                    "Delivering the final decision to the end-user.",
+                    "Generating new images and videos.",
+                    "Receiving raw data (such as images, sounds, or numbers) and passing it to subsequent layers.",
+                    "Self-modifying the software's source code."
                 ],
                 correct: 2,
-                exp: "طبقة المدخلات (Input Layer) هي النقطة الأولى التي تستقبل البيانات والمعلومات الخام لتمريرها عبر أجزاء الشبكة."
+                exp: "The Input Layer is the entry point that receives raw data and information to pass through the network."
             },
             {
-                q: "18. أي المعايير التالية تجعلنا نصنف تطبيق محادثة ذكي بأنه يتبع (Generative AI) وليس مجرد (Traditional Machine Learning)؟",
+                q: "18. Which criteria leads us to classify a chatbot app under Generative AI rather than Traditional Machine Learning?",
                 options: [
-                    "قدرته على الرد بإجابات وصياغات نصوص جديدة وفريدة لم تكن مخزنة مسبقاً حرفياً.",
-                    "قدرته على تصنيف الرسائل إلى رسائل هامة ورسائل مهملة فقط.",
-                    "عمله بدون حاسوب أو اتصال بالإنترنت.",
-                    "اعتماده الكامل على الضغط على أزرار اختيار محددة مسبقاً."
+                    "Its ability to respond with new, unique text structures and answers that were not literally pre-stored.",
+                    "Its ability only to categorize messages into important and spam.",
+                    "Its ability to work without a computer or internet connection.",
+                    "Its complete reliance on clicking pre-defined selection buttons."
                 ],
                 correct: 0,
-                exp: "الذكاء الاصطناعي التوليدي يتميز بقدرته على ابتراك وإنشاء محتوى جديد (New text, images, audio) وليس مجرد تصنيف محتوى موجود."
+                exp: "Generative AI is defined by its ability to create new content (new text, images, audio) rather than just classifying existing content."
             },
             {
-                q: "19. إذا طلب منك تصميم نظام للتعرف على أوجه الموظفين لتسجيل الحضور، أي التقنيات تعتبر القلب النامي لهذا التطبيق الحديث؟",
+                q: "19. If you were asked to design an employee facial recognition system for attendance tracking, which technology forms the core of this modern app?",
                 options: [
-                    "Deep Learning باستخدام Neural Networks.",
-                    "البرمجة التقليدية بمدخلات الشرط اليدوي (If/Else).",
-                    "معالجة النصوص عبر الجداول الإلكترونية.",
-                    "الذكاء الاصطناعي العام التوليدي للقصص."
+                    "Deep Learning using Neural Networks.",
+                    "Traditional programming with manual conditional statements (If/Else).",
+                    "Text processing using spreadsheets.",
+                    "Generative General AI for storytelling."
                 ],
                 correct: 0,
-                exp: "تحليل الصور وتعرف الوجوه (Image recognition) يستند بشكل أساسي إلى التعلم العميق (Deep Learning) والشبكات العصبية."
+                exp: "Image analysis and facial recognition rely primarily on Deep Learning and Neural Networks."
             },
             {
-                q: "20. مهندس بيئة يريد استغلال الذكاء الاصطناعي لمراقبة جودة المياه. ما الخطوة الأولى الأهم لبناء نموذج تعلم آلة (Machine Learning) ناجح؟",
+                q: "20. An environmental engineer wants to utilize AI to monitor water quality. What is the most critical first step to build a successful Machine Learning model?",
                 options: [
-                    "كتابة ألف شفرة شرطية يدوية لقواعد جودة المياه.",
-                    "جمع وتنظيم بيانات ومعطيات ضخمة ومتنوعة عن عينات المياه ليتعلم منها النموذج الأنماط.",
-                    "شراء شاشة عرض كبيرة جدًا.",
-                    "الاعتماد على ترجمة النصوص فقط."
+                    "Writing a thousand manual conditional lines for water quality rules.",
+                    "Collecting and organizing a large, diverse dataset of water samples for the model to learn patterns from.",
+                    "Purchasing a very large monitor.",
+                    "Relying solely on text translation."
                 ],
                 correct: 1,
-                exp: "تعلم الآلة يعتمد كلياً على (Learning patterns from data)، لذا فإن توفير البيانات المناسبة هو الأساس للتعلم."
+                exp: "Machine learning relies completely on learning patterns from data, making proper data provision the foundation of learning."
             },
             {
-                q: "21. بناءً على ما درست، هل يمكن للذكاء الاصطناعي التوليدي (Generative AI) أن يعمل بكفاءة بدون وجود التعلم العميق (Deep Learning)؟",
+                q: "21. Based on what you studied, can Generative AI work effectively without Deep Learning?",
                 options: [
-                    "نعم، لأن الذكاء الاصطناعي التوليدي تكنولوجيا منفصلة تماماً.",
-                    "لا، لأن الذكاء الاصطناعي التوليدي مبني بالأساس كفئة متخصصة داخل التعلم العميق.",
-                    "نعم، باستخدام القواعد البرمجية الثابتة القديمة.",
-                    "لا، لأن الذكاء الاصطناعي التوليدي يسبق التعلم العميق في التسلسل الهرمي."
+                    "Yes, because Generative AI is a completely separate technology.",
+                    "No, because Generative AI is primarily built as a specialized subset within Deep Learning.",
+                    "Yes, by using old fixed programming rules.",
+                    "No, because Generative AI precedes Deep Learning in the hierarchy."
                 ],
                 correct: 1,
-                exp: "حسب النص: 'today's generative AI systems are built on deep learning' الذكاء الاصطناعي التوليدي مبني ومصمم داخل تقنيات التعلم العميق."
+                exp: "According to the text: 'Today's generative AI systems are built on deep learning.' Generative AI is designed inside deep learning techniques."
             },
             {
-                q: "22. ما المعنى الدقيق لجملة 'Today's AI is Narrow' كما وردت في المستند؟",
+                q: "22. What is the exact meaning of the statement 'Today's AI is Narrow' as presented in the document?",
                 options: [
-                    "أن الذكاء الاصطناعي الحالي ذكي جداً في كل المجالات كالبشر تماماً.",
-                    "أن الذكاء الاصطناعي متخصص ومتقن لمهمة واحدة محددة فقط ولا يستطيع مجاوزتها تلقائياً.",
-                    "أن أنظمة الذكاء الاصطناعي تعمل فقط على الشاشات الضيقة للهواتف.",
-                    "أن التكنولوجيا الحالية تعاني من ضيق المساحة التخزينية."
+                    "Current AI is highly intelligent across all fields, just like humans.",
+                    "Current AI is specialized and proficient in performing only one specific task and cannot automatically exceed it.",
+                    "AI systems only operate on narrow smartphone screens.",
+                    "Current technology suffers from limited storage space."
                 ],
                 correct: 1,
-                exp: "مذكور بالنص: 'Today's AI is narrow - expert at one task only' أي أنه خبير في أداء مهمة واحدة محددة فقط."
+                exp: "Stated in the text: 'Today's AI is narrow - expert at one task only', meaning it is expert in executing one single specific task."
             },
             {
-                q: "23. في معالجة اللغة الطبيعية، عندما يحول تطبيق الترجمة نصاً من العربية للإنجليزية، ما الذي يقوم به النظام بناءً على أسلوب الذكاء الاصطناعي؟",
+                q: "23. In natural language processing, when a translation application converts text from Arabic to English, what does the system do based on AI methodology?",
                 options: [
-                    "يقوم باستبدال كل كلمة بحفظ معجمي حرفي دون مراقبة السياق.",
-                    "يحلل الأنماط والعلاقات اللغوية من البيانات لإنتاج ترجمة دقيقة ومناسبة للسياق.",
-                    "يتصل بمترجم بشري لترجمة النص فورياً.",
-                    "يعتمد على القواعد الثابتة التي تم إدخالها عام 1990 فقط."
+                    "Replaces each word via literal dictionary matching without considering context.",
+                    "Analyzes linguistic patterns and relationships from data to generate an accurate and context-appropriate translation.",
+                    "Connects to a human translator to translate text in real-time.",
+                    "Relies strictly on fixed rules entered in 1990."
                 ],
                 correct: 1,
-                exp: "أنظمة الترجمة بالذكاء الاصطناعي تستخدم التعلم العميق لتعلم الأنماط والتركيبات بين اللغات لتوليد الترجمة الأكثر ملاءمة."
+                exp: "AI translation systems use deep learning to master patterns and structures across languages to generate the most appropriate translation."
             },
             {
-                q: "24. سيناريو اتخاذ قرار: شركة ألعاب تريد إنشاء شخصيات تتحدث وتصنع حوارات جديدة وغير مكررة مع اللاعبين أثناء اللعب. ما التكنولوجيا الواجب توظيفها؟",
+                q: "24. Decision-Making Scenario: A gaming company wants to create characters that converse and generate new, unrepeated dialogue with players during gameplay. Which technology should be deployed?",
                 options: [
-                    "البرمجة بشروط ثابتة محددة المسبقاً.",
-                    "الذكاء الاصطناعي التوليدي (Generative AI).",
-                    "تطبيق فلترة البريد الإلكتروني المزعج.",
-                    "جداول البيانات الإحصائية الثابتة."
+                    "Programming with pre-defined fixed rules.",
+                    "Generative AI.",
+                    "Email spam filtering application.",
+                    "Static statistical spreadsheets."
                 ],
                 correct: 1,
-                exp: "لتوليد حوارات جديدة وتفاعلية (New text/speech) لم تبرمج يدوياً، يلزم استخدام الذكاء الاصطناعي التوليدي."
+                exp: "To generate dynamic, non-preprogrammed dialogue (New text/speech), Generative AI must be used."
             },
             {
-                q: "25. ما الفرق الأساسي بين (Output Layer) والـ (Input Layer) في مكونات الشبكة العصبية؟",
+                q: "25. What is the primary difference between the Output Layer and the Input Layer in neural network components?",
                 options: [
-                    "طبقة المدخلات تستقبل البيانات، بينما طبقة المخرجات تعرض القرار أو النتيجة النهائية للنموذج.",
-                    "طبقة المخرجات تقوم بتجميع البيانات، وطبقة المدخلات تصدر الأوامر.",
-                    "لا يوجد فرق بينهما، كلاهما يقومان بنفس العمل بالتبادل.",
-                    "طبقة المدخلات تحتوي على الخلايا العصبية البشارية الحقيقية."
+                    "The input layer receives raw data, while the output layer presents the model's final decision or prediction.",
+                    "The output layer aggregates data, while the input layer issues commands.",
+                    "There is no difference; both perform the same role interchangeably.",
+                    "The input layer contains actual biological human neurons."
                 ],
                 correct: 0,
-                exp: "Input layer تستقبل البيانات الخام في البداية، بينما Output layer هي الطبقة التي تعطي القرار أو التنبؤ النهائي (Decision/Prediction)."
+                exp: "The Input layer receives raw input data at the start, whereas the Output layer outputs the final decision or prediction."
             }
         ];
 
@@ -672,14 +672,14 @@
                 const reviewItem = document.createElement('div');
                 reviewItem.className = `review-item ${isCorrect ? 'correct-bg' : 'incorrect-bg'}`;
 
-                const userAnsText = userAnswers[idx] !== null ? q.options[userAnswers[idx]] : "لم يتم الإجابة";
+                const userAnsText = userAnswers[idx] !== null ? q.options[userAnswers[idx]] : "Not Answered";
                 const correctAnsText = q.options[q.correct];
 
                 reviewItem.innerHTML = `
                     <div style="font-weight: bold; margin-bottom: 5px;">${q.q}</div>
-                    <div>إجابتك: <span style="color: ${isCorrect ? 'var(--correct)' : 'var(--incorrect)'}; font-weight: bold;">${userAnsText}</span></div>
-                    ${!isCorrect ? `<div>الإجابة الصحيحة: <span style="color: var(--correct); font-weight: bold;">${correctAnsText}</span></div>` : ''}
-                    <div class="explanation">💡 <b>الشرح والتحليل:</b> ${q.exp}</div>
+                    <div>Your Answer: <span style="color: ${isCorrect ? 'var(--correct)' : 'var(--incorrect)'}; font-weight: bold;">${userAnsText}</span></div>
+                    ${!isCorrect ? `<div>Correct Answer: <span style="color: var(--correct); font-weight: bold;">${correctAnsText}</span></div>` : ''}
+                    <div class="explanation">💡 <b>Explanation & Analysis:</b> ${q.exp}</div>
                 `;
 
                 reviewContainer.appendChild(reviewItem);
@@ -688,10 +688,10 @@
             document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
             
             let feedback = "";
-            if (score >= 22) feedback = "ممتاز جداً! تفوق باهر وفهم عميق جداً لمهارات الذكاء الاصطناعي والتفكير الهندسي.";
-            else if (score >= 17) feedback = "جيد جداً! لديك مستوى قوي وتحليل ممتاز، مع الحاجة لمراجعة بعض النقاط الدقيقة.";
-            else if (score >= 12) feedback = "مستوى متوسط، تحتاج لإعادة قراءة الدرس وتعميق فهمك للفرق بين التقنيات والسيناريوهات.";
-            else feedback = "يحتاج لإعادة مراجعة وشرح الدرس مرة أخرى للحصول على نتائج أفضل.";
+            if (score >= 22) feedback = "Excellent! Outstanding performance and deep understanding of AI concepts and engineering problem-solving.";
+            else if (score >= 17) feedback = "Very Good! Strong performance and analysis, with just a few minor details to review.";
+            else if (score >= 12) feedback = "Average performance. You should revisit the lesson to reinforce key differences between techniques and scenarios.";
+            else feedback = "Needs revision. It is recommended to review the lesson content once more for better comprehension.";
 
             document.getElementById('feedback-text').innerText = feedback;
         }
@@ -701,4 +701,3 @@
     </script>
 </body>
 </html>
-
