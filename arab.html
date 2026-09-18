@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz on Lesson 2 - Prepared by Mrs. Hend Kandeel</title>
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --correct: #10b981;
+            --incorrect: #ef4444;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        /* Watermark */
+        .watermark {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 0;
+            background-image: url('taaleemy.jpg');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+            padding: 30px;
+            position: relative;
+            z-index: 1;
+            margin-top: 20px;
+            border: 1px solid var(--border);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: red;
+            font-weight: 600;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 12px 20px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        .timer {
+            color: #d97706;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .question-card {
+            display: none;
+        }
+
+        .question-card.active {
+            display: block;
+        }
+
+        .question-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #1e293b;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .option-btn {
+            background: #fff;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 18px;
+            text-align: right;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .option-btn:hover {
+            border-color: var(--primary);
+            background: #f8fafc;
+        }
+
+        .option-btn.selected {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+
+        /* Results Screen */
+        .results-screen {
+            display: none;
+            text-align: center;
+        }
+
+        .score-box {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 20px 0;
+        }
+
+        .review-section {
+            text-align: right;
+            margin-top: 30px;
+            border-top: 2px solid var(--border);
+            padding-top: 20px;
+        }
+
+        .review-item {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .review-item.correct-bg {
+            border-right: 5px solid var(--correct);
+        }
+
+        .review-item.incorrect-bg {
+            border-right: 5px solid var(--incorrect);
+        }
+
+        .explanation {
+            margin-top: 8px;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            background: #fff;
+            padding: 10px;
+            border-radius: 6px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .quiz-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="watermark"></div>
+
+    <div class="container">
+        <header>
+            <h1>Quiz on Lesson 2</h1>
+            <div class="subtitle">Prepared by Mrs. Hend Kandeel <br>01151305204</div>
+        </header>
+
+        <div id="quiz-box">
+            <div class="quiz-header">
+                <div>السؤال <span id="current-num">1</span> من 25</div>
+                <div class="timer">⏱️ المتبقي: <span id="timer-display">25:00</span></div>
+            </div>
+
+            <div id="questions-container"></div>
+
+            <div class="controls">
+                <button class="btn btn-secondary" id="prev-btn" onclick="prevQuestion()" disabled>السابق</button>
+                <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">التالي</button>
+                <button class="btn btn-primary" id="submit-btn" onclick="finishQuiz()" style="display: none;">إنهاء  الاختبار</button>
+            </div>
+        </div>
+
+        <div id="results-box" class="results-screen">
+            <h2>انتهى الاختبار!</h2>
+            <div class="score-box" id="final-score">0 / 25</div>
+            <p id="feedback-text"></p>
+
+            <div class="review-section">
+                <h3>مراجعة الإجابات وتصحيح الأخطاء:</h3>
+                <div id="review-container"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                q: "1. بصفتك مهندس أنظمة ذكاء اصطناعي، طُلِب منك تصميم نظام لتصنيف البريد الإلكتروني. لو اعتمدت على 'البرمجة التقليدية' بدلاً من 'تعلم الآلة' (Machine Learning)، ما العقبة الأساسية التي ستواجهها؟",
+                options: [
+                    "عدم قدرة الحاسوب على معالجة النصوص العربية والإنجليزية معا.",
+                    "الحاجة لكتابة ملايين القواعد والشرائط الاستثنائية يدوياً لمواكبة أساليب الاحتيال المتجددة.",
+                    "عدم وجود شبكات عصبية قادرة على فهم العناوين الإلكترونية.",
+                    "استهلاك الخوادم لطاقة معالجة ضخمة جداً مقارنة بتعلم الآلة."
+                ],
+                correct: 1,
+                exp: "البرمجة التقليدية تعتمد على قواعد ثابتة (Fixed rules). في حالة الفلترة، ستحتاج لكتابة كل شروط الكلمات والاحتيالات يدوياً وهو أمر شبه مستحيل للتطور المستمر للسبام."
+            },
+            {
+                q: "2. ما الفارق الجوهري في آلية العمل بين نموذج يتنبأ بأسعار المنازل بناءً على مساحتها (Machine Learning) ونموذج ينشئ صوراً خيالية لمنازل غير موجودة (Generative AI)؟",
+                options: [
+                    "الأول يستخرج أنماطاً للتنبؤ بقيمة عدودية، بينما الثاني يستخدم التعلم العميق لتركيب بيانات وبنية جديدة تماماً.",
+                    "الأول يعتمد على الشبكات العصبية، بينما الثاني لا يستخدم التعلم العميق.",
+                    "الأول يعتمد على قواعد ثابتة، بينما الثاني يعتمد على صياغة المحادثات فقط.",
+                    "لا يوجد فارق، كلاهما يؤدي نفس المهمة البرمجية بشكل مطبق."
+                ],
+                correct: 0,
+                exp: "تعلم الآلة التقليدي يستخرج الأنماط للقيام بـ (Predictions/Judgments)، بينما الذكاء الاصطناعي التوليدي (المنبثق من التعلم العميق) ينشئ بيانات جديدة (New data) مثل الصور والنصوص."
+            },
+            {
+                q: "3. تراتب التكنولوجيات (Hierarchy of AI): أي التعبيرات التالية يصف العلاقة الاحتوائية بأسلوب هندسي دقيق؟",
+                options: [
+                    "الذكاء الاصطناعي التوليدي ينشئ التعلم العميق، والتعلم العميق ينشئ تعلم الآلة.",
+                    "الذكاء الاصطناعي مظلة عامة، تضم تعلم الآلة، والذي يضم التعلم العميق، والذي يضم الذكاء الاصطناعي التوليدي.",
+                    "تعلم الآلة والذكاء الاصطناعي التوليدي تقنيتان منفصلتان تماماً تحت مظلة الشبكات العصبية.",
+                    "الشبكات العصبية هي المظلة الكبرى التي تحتوي الذكاء الاصطناعي العام."
+                ],
+                correct: 1,
+                exp: "حسب المخطط الهيكلي في الدرس (Nested Categories): الذكاء الاصطناعي يشمل تعلم الآلة، وداخله التعلم العميق، وداخله الذكاء الاصطناعي التوليدي."
+            },
+            {
+                q: "4. سيناريو هندسي: سيارة ذاتية القيادة تم تدريب نظامها باستخدام التعلم العميق على القيادة في شوارع مشمسة فقط. عند قيادتها أثناء عاصفة ثلجية شديدة، تعثر النظام. ما السبب العلمي لذلك وفقاً للدرس؟",
+                options: [
+                    "لأن الذكاء الاصطناعي الحالي ذكاء ضيق (Narrow AI) ويعتمد التعلم العميق على التعلم من البيانات الضخمة المتاحة في التدريب فقط.",
+                    "لأن الشبكة العصبية تحولت تلقائياً إلى نظام برمجي قائم على القواعد الثابتة.",
+                    "لأن الذكاء الاصطناعي التوليدي لم يقم بتوليد طرق جديدة أثناء القيادة.",
+                    "بسبب وجود خلل في المحرك الميكانيكي للسيارة وليس في نموذج الذكاء الاصطناعي."
+                ],
+                correct: 0,
+                exp: "الذكاء الاصطناعي اليوم متكافئ مع (Narrow AI) محدد لمهمة وبيانات معينة؛ والشبكات العصبية في التعلم العميق تواجه صعوبة بالغة مع المواقف والبيانات التي لم ترها مسبقاً (Rarely seen in data)."
+            },
+            {
+                q: "5. كيف تفسر محاكاة الشبكة العصبية الاصطناعية (Neural Network) للخلايا العصبية البشرية في اتخاذ القرارات المعقدة؟",
+                options: [
+                    "عن طريق إعطاء الحاسوب مشاعر وعواطف بشرية تمكنه من التفكير.",
+                    "عن طريق ربط أجزاء ومكونات بسيطة في طبقات تتبادل الإشارات لتمرير وتراكم الأنماط.",
+                    "عن طريق تخزين الأوامر في صورة شفرات ثنائية ثابتة لا تتغير.",
+                    "عن طريق استخدام المترجم الفوري بين اللغات."
+                ],
+                correct: 1,
+                exp: "تتكون الشبكة العصبية الاصطناعية من أجزاء بسيطة متصلة في طبقات (Input, Hidden, Output layers) تعمل معاً لمعالجة البيانات المعقدة كمحاكاة لشبكات خلايا الدماغ."
+            },
+            {
+                q: "6. سيناريو مطور: طوّرت شركة برنامجاً يتعرف على أصوات المستخدمين لفتح الأبواب. تم تصنيف هذا النظام بأنه (Narrow AI). ماذا يعني ذلك في التطبيق العملي؟",
+                options: [
+                    "أن البرنامج يمكنه أيضاً ترجمة النصوص وكتابة المقالات ببراعة عالية بنفس الكفاءة.",
+                    "أن البرنامج خبير ومخصص لمهمة التعرف على الصوت فقط، ولا يمكنه اتخاذ قرارات خارج هذا نطاق.",
+                    "أن البرنامج يعمل بدون الحاجة إلى أي بيانات تدريبية أو شبكات عصبية.",
+                    "أن البرنامج يعتمد كلياً على الذكاء الاصطناعي التوليدي (Generative AI)."
+                ],
+                correct: 1,
+                exp: "الذكاء الاصطناعي الحالي يوصف بأنه (Narrow AI - expert at one task only) أي أنه متفوق ومختص في تنفيذ مهمة واحدة محددة فقط."
+            },
+            {
+                q: "7. إذا أردنا بناء تطبيق يقوم بتوليد مقاطع صوتية ونصوص برمجية بناءً على أوامر نصية (Prompts)، فما هي التقنية المحددة المفضلة للاستخدام؟",
+                options: [
+                    "البرمجة باستخدام القواعد الثابتة (Fixed rules).",
+                    "تعلم الآلة التقليدي لفلترة البريد.",
+                    "الذكاء الاصطناعي التوليدي (Generative AI).",
+                    "الذكاء الاصطناعي العام (AGI)."
+                ],
+                correct: 2,
+                exp: "الذكاء الاصطناعي التوليدي هو المسؤول عن إنشاء بيانات جديدة كالنصوص، الصور، الأكواد، والصوت بناءً على الأوامر (Prompts)."
+            },
+            {
+                q: "8. ما الدور الأساسي للـ (Hidden Layers) أو الطبقات الخفية في بناء الشبكة العصبية الاصطناعية؟",
+                options: [
+                    "استلام الأوامر النصية مباشرة من المستخدم النهائي.",
+                    "معالجة البيانات واستخراج الأنماط المعقدة والتفاصيل بين المدخلات والمخرجات.",
+                    "حفظ البيانات بشكل دائم وتصديرها كملفات PDF.",
+                    "إلغاء الحاجة لبيانات التدريب والاعتماد على الذكاء البشري."
+                ],
+                correct: 1,
+                exp: "الطبقات الخفية في الشبكات العصبية تقوم بالعمليات الحسابية المعقدة لتحديد وتحليل الأنماط العميقة المخبأة في البيانات."
+            },
+            {
+                q: "9. قام مهندس بتحليل نظام اقتراح المنتجات في متجر إلكتروني ونظام تصفية الرسائل المزعجة (Spam filter). ما العامل المشترك الجوهري بينهما من حيث آلية الذكاء الاصطناعي؟",
+                options: [
+                    "كلاهما يستخدم الذكاء الاصطناعي التوليدي لإنشاء منتجات ورسائل جديدة.",
+                    "كلاهما تطبيق من تطبيقات تعلم الآلة (Machine Learning) يتعلم الأنماط من بيانات المستخدمين لاتخاذ قرارات.",
+                    "كلاهما يعتمد على أكواد برمجية بشرية ثابتة لا تتغير بتغير سلوك المستخدم.",
+                    "كلاهما يعمل فقط على الهواتف الذكية دون أجهزة الكمبيوتر."
+                ],
+                correct: 1,
+                exp: "كلا التطبيقين يمثلان (Machine Learning) حيث يتعلمان الأنماط (Patterns) من سلوكيات وبيانات السجلات السابقة للتنبؤ والتقييم."
+            },
+            {
+                q: "10. في الاستجابة للأوامر النصية (Prompts) عبر أداة مثل ChatGPT، ما التقنية المصنفة تحت التعلم العميق التي تمكن النظام من كتابة ردود مترابطة؟",
+                options: [
+                    "التحليل اليدوي المباشر بواسطة المبرمج.",
+                    "الذكاء الاصطناعي التوليدي (Generative AI).",
+                    "قواعد البيانات الجغرافية الثابتة.",
+                    "نظم الترجمة المعتمدة على المعاجم فقط."
+                ],
+                correct: 1,
+                exp: "ChatGPT هو تطبيق مباشر على الذكاء الاصطناعي التوليدي المبتكر المبني على تقنيات التعلم العميق."
+            },
+            {
+                q: "11. تخيل أنك تبني نموذج ذكاء اصطناعي للتعرف على أمراض الأشجار. إذا قمت بتغذية النموذج بـ 5 صور فقط لكل مرض، فما المتوقع لنتائجه؟ ولماذا؟",
+                options: [
+                    "سيعطي نتائج ممتازة لأن التعلم العميق لا يحتاج سوى لبيانات قليلة جداً.",
+                    "سيعاني النموذج من ضعف الدقة لأنه تقنية تعلم عميق تتطلب بيانات ضخمة (Large-scale data) لتعلم الأنماط.",
+                    "سينتحل النموذج شخصية مهندس زراعي ويولد حلاً تلقائياً.",
+                    "سيتتحول الشبكة العصبية فوراً إلى قواعد كتابية ثابتة."
+                ],
+                correct: 1,
+                exp: "يحتاج التعلم العميق (Deep Learning) إلى بيانات ضخمة (Large-scale data) ليتمكن من استخراج الأنماط والتعلم بفعالية."
+            },
+            {
+                q: "12. سيناريو: طلب منك رئيسك في العمل اختيار التكنولوجيا المناسبة لتطوير تطبيق يترجم الكلام الصوتي المباشر بين تحدثين بلغات مختلفة أثناء المكالمات. ما التصنيف الدقيق لهذه التقنية؟",
+                options: [
+                    "ذكاء اصطناعي يعتمد على التعلم العميق للتعرف على الصوت والترجمة (Deep Learning).",
+                    "برمجة شجرية بسيطة قائمة على القواعد الشرطية التقليدية.",
+                    "توليد رسوم متحركة ذكية.",
+                    "أنظمة تخزين سحابية تقليدية."
+                ],
+                correct: 0,
+                exp: "معالجة وتحليل الصوت والترجمة الفورية المعقدة تعتمد أساساً على التعلم العميق والشبكات العصبية (Speech recognition & translation)."
+            },
+            {
+                q: "13. عند مقارنة (Machine Learning) بـ (Fixed Rules Programming)، أي الجمل الآتية تعبر بوضوح عن وجه الاختلاف؟",
+                options: [
+                    "في القواعد الثابتة نكتب التعليمات يدوياً، بينما في تعلم الآلة نستخرج القواعد والأنماط من البيانات.",
+                    "تعلم الآلة لا يحتاج إلى كمبيوتر لتشغيله بخلاف القواعد الثابتة.",
+                    "القواعد الثابتة تنشئ صوراً وفيديوهات، بينما تعلم الآلة لا يفعل ذلك.",
+                    "تعلم الآلة يُستخدم فقط في الروبوتات المصنعية."
+                ],
+                correct: 0,
+                exp: "الفارق الأساسي: Traditional Programming = Fixed rules hand-written by humans. Machine Learning = Learning patterns automatically from data."
+            },
+            {
+                q: "14. أي مما يلي يمثل الترتيب الصحيح للانتقال من المفاهيم الأكثر شمولاً وعمومية إلى التكنولوجيات الأكثر تخصصاً؟",
+                options: [
+                    "Generative AI -> Deep Learning -> Machine Learning -> AI",
+                    "AI -> Machine Learning -> Deep Learning -> Generative AI",
+                    "Deep Learning -> AI -> Generative AI -> Machine Learning",
+                    "Machine Learning -> AI -> Deep Learning -> Generative AI"
+                ],
+                correct: 1,
+                exp: "حسب التسلسل الهرمي المذكور بالنص: الذكاء الاصطناعي (العام) ثم تعلم الآلة ثم التعلم العميق ثم الذكاء الاصطناعي التوليدي."
+            },
+            {
+                q: "15. لماذا يُعتبر مصطلح 'الذكاء الاصطناعي' (AI) مصطلحاً عاماً (General Term)؟",
+                options: [
+                    "لأنه يقتصر فقط على الروبوتات الناطقة.",
+                    "لأنه يشمل أي تكنولوجيا تحاكي أو تؤدي سلوكاً ذكياً يشبه السلوك البشري (كالتعلم والتفكير والحكم).",
+                    "لأنه يعبر فقط عن الأجهزة الحديثة المصنوعة بعد عام 2023.",
+                    "لأنه يعتمد حتمياً على كتابة الشفرات يدويًا دون بيانات."
+                ],
+                correct: 1,
+                exp: "تعريف الـ AI في المستند: A general term for technologies that reproduce or perform intelligent human behavior (learning, reasoning, judgment, etc.)."
+            },
+            {
+                q: "16. سيناريو هندسي: إذا فشل نظام التنبؤ بالطقس المعتمد على التعلم العميق في التنبؤ بظاهرة جوية نادرة جداً لم تحدث منذ 100 عام، ما السبب التحليلي الأساسي؟",
+                options: [
+                    "الشبكة العصبية الاصطناعية تعرضت للكسر الفيزيائي.",
+                    "النموذج لم يمتلك بيانات كافية (Rarely seen in data) عن هذه الظاهرة أثناء مرحلة التدريب.",
+                    "النظام تحول إلى ذكاء اصطناعي عام.",
+                    "الظاهرة الجوية لا يمكن التنبؤ بها إطلاقاً بأي تكنولوجيا."
+                ],
+                correct: 1,
+                exp: "مذكور في أسئلة التفكير بالدرس (PAUSE & THINK): نماذج التعلم العميق تجد صعوبة بالغة في التعامل مع ما لم ترَه أو تندر رؤيته في بيانات التدريب."
+            },
+            {
+                q: "17. ما الوظيفة الرئيسية لـ (Input Layer) أو طبقة المدخلات في البناء الهيكلي للشبكة العصبية؟",
+                options: [
+                    "إعطاء القرار النهائي للمستخدم.",
+                    "توليد الصور والفيديوهات الجديدة.",
+                    "استقبال البيانات الخام (كالصور أو الأصوات أو الأرقام) وتمريرها للطبقات التالية.",
+                    "تعديل الأكواد البرمجية للبرنامج ذاتياً."
+                ],
+                correct: 2,
+                exp: "طبقة المدخلات (Input Layer) هي النقطة الأولى التي تستقبل البيانات والمعلومات الخام لتمريرها عبر أجزاء الشبكة."
+            },
+            {
+                q: "18. أي المعايير التالية تجعلنا نصنف تطبيق محادثة ذكي بأنه يتبع (Generative AI) وليس مجرد (Traditional Machine Learning)؟",
+                options: [
+                    "قدرته على الرد بإجابات وصياغات نصوص جديدة وفريدة لم تكن مخزنة مسبقاً حرفياً.",
+                    "قدرته على تصنيف الرسائل إلى رسائل هامة ورسائل مهملة فقط.",
+                    "عمله بدون حاسوب أو اتصال بالإنترنت.",
+                    "اعتماده الكامل على الضغط على أزرار اختيار محددة مسبقاً."
+                ],
+                correct: 0,
+                exp: "الذكاء الاصطناعي التوليدي يتميز بقدرته على ابتراك وإنشاء محتوى جديد (New text, images, audio) وليس مجرد تصنيف محتوى موجود."
+            },
+            {
+                q: "19. إذا طلب منك تصميم نظام للتعرف على أوجه الموظفين لتسجيل الحضور، أي التقنيات تعتبر القلب النامي لهذا التطبيق الحديث؟",
+                options: [
+                    "Deep Learning باستخدام Neural Networks.",
+                    "البرمجة التقليدية بمدخلات الشرط اليدوي (If/Else).",
+                    "معالجة النصوص عبر الجداول الإلكترونية.",
+                    "الذكاء الاصطناعي العام التوليدي للقصص."
+                ],
+                correct: 0,
+                exp: "تحليل الصور وتعرف الوجوه (Image recognition) يستند بشكل أساسي إلى التعلم العميق (Deep Learning) والشبكات العصبية."
+            },
+            {
+                q: "20. مهندس بيئة يريد استغلال الذكاء الاصطناعي لمراقبة جودة المياه. ما الخطوة الأولى الأهم لبناء نموذج تعلم آلة (Machine Learning) ناجح؟",
+                options: [
+                    "كتابة ألف شفرة شرطية يدوية لقواعد جودة المياه.",
+                    "جمع وتنظيم بيانات ومعطيات ضخمة ومتنوعة عن عينات المياه ليتعلم منها النموذج الأنماط.",
+                    "شراء شاشة عرض كبيرة جدًا.",
+                    "الاعتماد على ترجمة النصوص فقط."
+                ],
+                correct: 1,
+                exp: "تعلم الآلة يعتمد كلياً على (Learning patterns from data)، لذا فإن توفير البيانات المناسبة هو الأساس للتعلم."
+            },
+            {
+                q: "21. بناءً على ما درست، هل يمكن للذكاء الاصطناعي التوليدي (Generative AI) أن يعمل بكفاءة بدون وجود التعلم العميق (Deep Learning)؟",
+                options: [
+                    "نعم، لأن الذكاء الاصطناعي التوليدي تكنولوجيا منفصلة تماماً.",
+                    "لا، لأن الذكاء الاصطناعي التوليدي مبني بالأساس كفئة متخصصة داخل التعلم العميق.",
+                    "نعم، باستخدام القواعد البرمجية الثابتة القديمة.",
+                    "لا، لأن الذكاء الاصطناعي التوليدي يسبق التعلم العميق في التسلسل الهرمي."
+                ],
+                correct: 1,
+                exp: "حسب النص: 'today's generative AI systems are built on deep learning' الذكاء الاصطناعي التوليدي مبني ومصمم داخل تقنيات التعلم العميق."
+            },
+            {
+                q: "22. ما المعنى الدقيق لجملة 'Today's AI is Narrow' كما وردت في المستند؟",
+                options: [
+                    "أن الذكاء الاصطناعي الحالي ذكي جداً في كل المجالات كالبشر تماماً.",
+                    "أن الذكاء الاصطناعي متخصص ومتقن لمهمة واحدة محددة فقط ولا يستطيع مجاوزتها تلقائياً.",
+                    "أن أنظمة الذكاء الاصطناعي تعمل فقط على الشاشات الضيقة للهواتف.",
+                    "أن التكنولوجيا الحالية تعاني من ضيق المساحة التخزينية."
+                ],
+                correct: 1,
+                exp: "مذكور بالنص: 'Today's AI is narrow - expert at one task only' أي أنه خبير في أداء مهمة واحدة محددة فقط."
+            },
+            {
+                q: "23. في معالجة اللغة الطبيعية، عندما يحول تطبيق الترجمة نصاً من العربية للإنجليزية، ما الذي يقوم به النظام بناءً على أسلوب الذكاء الاصطناعي؟",
+                options: [
+                    "يقوم باستبدال كل كلمة بحفظ معجمي حرفي دون مراقبة السياق.",
+                    "يحلل الأنماط والعلاقات اللغوية من البيانات لإنتاج ترجمة دقيقة ومناسبة للسياق.",
+                    "يتصل بمترجم بشري لترجمة النص فورياً.",
+                    "يعتمد على القواعد الثابتة التي تم إدخالها عام 1990 فقط."
+                ],
+                correct: 1,
+                exp: "أنظمة الترجمة بالذكاء الاصطناعي تستخدم التعلم العميق لتعلم الأنماط والتركيبات بين اللغات لتوليد الترجمة الأكثر ملاءمة."
+            },
+            {
+                q: "24. سيناريو اتخاذ قرار: شركة ألعاب تريد إنشاء شخصيات تتحدث وتصنع حوارات جديدة وغير مكررة مع اللاعبين أثناء اللعب. ما التكنولوجيا الواجب توظيفها؟",
+                options: [
+                    "البرمجة بشروط ثابتة محددة المسبقاً.",
+                    "الذكاء الاصطناعي التوليدي (Generative AI).",
+                    "تطبيق فلترة البريد الإلكتروني المزعج.",
+                    "جداول البيانات الإحصائية الثابتة."
+                ],
+                correct: 1,
+                exp: "لتوليد حوارات جديدة وتفاعلية (New text/speech) لم تبرمج يدوياً، يلزم استخدام الذكاء الاصطناعي التوليدي."
+            },
+            {
+                q: "25. ما الفرق الأساسي بين (Output Layer) والـ (Input Layer) في مكونات الشبكة العصبية؟",
+                options: [
+                    "طبقة المدخلات تستقبل البيانات، بينما طبقة المخرجات تعرض القرار أو النتيجة النهائية للنموذج.",
+                    "طبقة المخرجات تقوم بتجميع البيانات، وطبقة المدخلات تصدر الأوامر.",
+                    "لا يوجد فرق بينهما، كلاهما يقومان بنفس العمل بالتبادل.",
+                    "طبقة المدخلات تحتوي على الخلايا العصبية البشارية الحقيقية."
+                ],
+                correct: 0,
+                exp: "Input layer تستقبل البيانات الخام في البداية، بينما Output layer هي الطبقة التي تعطي القرار أو التنبؤ النهائي (Decision/Prediction)."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timerSeconds = 25 * 60;
+        let timerInterval;
+
+        function initQuiz() {
+            renderQuestions();
+            startTimer();
+            showQuestion(0);
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            questions.forEach((q, index) => {
+                const card = document.createElement('div');
+                card.className = `question-card ${index === 0 ? 'active' : ''}`;
+                card.id = `q-${index}`;
+
+                let optionsHTML = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHTML += `
+                        <button class="option-btn" onclick="selectOption(${index}, ${optIndex})">
+                            ${opt}
+                        </button>
+                    `;
+                });
+
+                card.innerHTML = `
+                    <div class="question-text">${q.q}</div>
+                    <div class="options-grid">${optionsHTML}</div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function showQuestion(index) {
+            document.querySelectorAll('.question-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(`q-${index}`).classList.add('active');
+            
+            document.getElementById('current-num').innerText = index + 1;
+
+            // Update option styles
+            const currentCard = document.getElementById(`q-${index}`);
+            const buttons = currentCard.querySelectorAll('.option-btn');
+            buttons.forEach((btn, optIdx) => {
+                if (userAnswers[index] === optIdx) {
+                    btn.classList.add('selected');
+                } else {
+                    btn.classList.remove('selected');
+                }
+            });
+
+            // Update Controls
+            document.getElementById('prev-btn').disabled = (index === 0);
+            
+            if (index === questions.length - 1) {
+                document.getElementById('next-btn').style.display = 'none';
+                document.getElementById('submit-btn').style.display = 'inline-block';
+            } else {
+                document.getElementById('next-btn').style.display = 'inline-block';
+                document.getElementById('submit-btn').style.display = 'none';
+            }
+        }
+
+        function selectOption(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+            showQuestion(qIdx);
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timerSeconds--;
+                let minutes = Math.floor(timerSeconds / 60);
+                let seconds = timerSeconds % 60;
+                
+                document.getElementById('timer-display').innerText = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                if (timerSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz();
+                }
+            }, 1000);
+        }
+
+        function finishQuiz() {
+            clearInterval(timerInterval);
+
+            document.getElementById('quiz-box').style.display = 'none';
+            document.getElementById('results-box').style.display = 'block';
+
+            let score = 0;
+            const reviewContainer = document.getElementById('review-container');
+            reviewContainer.innerHTML = '';
+
+            questions.forEach((q, idx) => {
+                const isCorrect = userAnswers[idx] === q.correct;
+                if (isCorrect) score++;
+
+                const reviewItem = document.createElement('div');
+                reviewItem.className = `review-item ${isCorrect ? 'correct-bg' : 'incorrect-bg'}`;
+
+                const userAnsText = userAnswers[idx] !== null ? q.options[userAnswers[idx]] : "لم يتم الإجابة";
+                const correctAnsText = q.options[q.correct];
+
+                reviewItem.innerHTML = `
+                    <div style="font-weight: bold; margin-bottom: 5px;">${q.q}</div>
+                    <div>إجابتك: <span style="color: ${isCorrect ? 'var(--correct)' : 'var(--incorrect)'}; font-weight: bold;">${userAnsText}</span></div>
+                    ${!isCorrect ? `<div>الإجابة الصحيحة: <span style="color: var(--correct); font-weight: bold;">${correctAnsText}</span></div>` : ''}
+                    <div class="explanation">💡 <b>الشرح والتحليل:</b> ${q.exp}</div>
+                `;
+
+                reviewContainer.appendChild(reviewItem);
+            });
+
+            document.getElementById('final-score').innerText = `${score} / ${questions.length}`;
+            
+            let feedback = "";
+            if (score >= 22) feedback = "ممتاز جداً! تفوق باهر وفهم عميق جداً لمهارات الذكاء الاصطناعي والتفكير الهندسي.";
+            else if (score >= 17) feedback = "جيد جداً! لديك مستوى قوي وتحليل ممتاز، مع الحاجة لمراجعة بعض النقاط الدقيقة.";
+            else if (score >= 12) feedback = "مستوى متوسط، تحتاج لإعادة قراءة الدرس وتعميق فهمك للفرق بين التقنيات والسيناريوهات.";
+            else feedback = "يحتاج لإعادة مراجعة وشرح الدرس مرة أخرى للحصول على نتائج أفضل.";
+
+            document.getElementById('feedback-text').innerText = feedback;
+        }
+
+        // Initialize on load
+        window.onload = initQuiz;
+    </script>
+</body>
+</html>
+
